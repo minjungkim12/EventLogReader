@@ -109,7 +109,7 @@ probecard_measurement_2nd= []
 chipCondition="ALL"#arguments can be "OK","NK","ALL"
 dirName = './result'
 fileList = os.listdir(dirName)
-fileChipbyChip = open("testresult.dat", 'w')
+fileChipbyChip = open("chipbychip_result.dat", 'w')
 print total_time
 for item in fileList :
     myfile = open(dirName + "/" + item,'r')
