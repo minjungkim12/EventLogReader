@@ -110,7 +110,7 @@ chipCondition="ALL"#arguments can be "OK","NK","ALL"
 dirName = './result'
 fileList = os.listdir(dirName)
 fileChipbyChip = open("chipbychip_result.csv", 'w')
-fileChipbyChip.write("Time,TrayID,ChipID,Status,TotalTime,Init,Dim,Edge,Probecard,Final_1,Final_2,PInit1,PTime1,PInit2,PTime2")
+fileChipbyChip.write("Time,TrayID,ChipID,Status,TotalTime,Init,Dim,Edge,Probecard,Final_1,Final_2,PInit1,PTime1,PInit2,PTime2\n")
 
 print total_time
 for item in fileList :
