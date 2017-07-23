@@ -1,0 +1,42 @@
+(dp1
+S'Dim'
+p2
+cdatetime
+datetime
+p3
+(S'\x07\xe1\x07\x0e\n  \x03\x8a@'
+tRp4
+sS'Finish'
+p5
+g3
+(S'\x07\xe1\x07\x0e\n!\x07\x07\x00\xf8'
+tRp6
+sS'trayID'
+p7
+S'TR000213'
+p8
+sS'chipID'
+p9
+S'C1'
+p10
+sS'Start'
+p11
+g3
+(S'\x07\xe1\x07\x0e\n\x1f\x11\x00\xcb '
+tRp12
+sS'Grip1'
+p13
+g3
+(S'\x07\xe1\x07\x0e\n \x05\x0c\xe4\xc8'
+tRp14
+sS'Grip0'
+p15
+g3
+(S'\x07\xe1\x07\x0e\n\x1f\x19\x04\xe9\xd0'
+tRp16
+sS'Grip2'
+p17
+g3
+(S'\x07\xe1\x07\x0e\n .\x0c\x06 '
+tRp18
+s.
