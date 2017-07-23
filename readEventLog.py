@@ -7,31 +7,32 @@ import cPickle as pickle
 
 def checkdatacondition(dic) :
     if not ('Start' in dic) :
-        # print "cannot find start time of test"
+        print "cannot find start time of test"
         isContinue = False
         return isContinue
     if not ('Dim' in dic) :
-        #        print "cannot find start time of dimension inspection"
+        print "cannot find start time of dimension inspection"
         isContinue = False
         return isContinue
-    if not ('Edge' in dic) :
-        #        print "cannot find start time of Edge inspection"
-        isContinue = False
-        return isContinue
-    if not ('fProbe' in dic) :
-        #        print "cannot find start time of Frist Probecard measurement"
-        isContinue = False
-        return isContinue
-    if not ('endProbe' in dic) :
-        #        print "cannot find end time of Probecard measurement"
-        isContinue = False
-        return isContinue
+ #   if not ('Edge' in dic) :
+ #       print "cannot find start time of Edge inspection"
+ #       isContinue = False
+ #       return isContinue
+#    if not ('fProbe' in dic) :
+#        print "cannot find start time of Frist Probecard measurement"
+#        isContinue = False
+#        return isContinue
+#    if not ('endProbe' in dic) :
+#        print "cannot find end time of Probecard measurement"
+#        isContinue = False
+#        return isContinue
     if not ('Finish' in dic) :
-        #        print "cannot find end time of test"
+        print "cannot find end time of test"
         isContinue = False
         return isContinue
     isContinue = True
     return isContinue
+
 
 dirName = './EventLog'
 fileList = os.listdir(dirName)
@@ -40,10 +41,12 @@ for item in fileList :
     myfile = open(dirName + "/" + item,'r')
     for line in myfile:
         lines.append(line)
+    
     myfile.close()
 
 strNEW = re.compile("Move traypos \D\d to PPC",re.IGNORECASE)
 strDim = re.compile("NOW Check dimensions: comment line skipped.")#Starting Dimension Inspection
+#strDimF = re.compile("DO NOTHING")#Fail Dimension Inspection
 strEdge = re.compile("NOW CHECK EDGE INTEGRITY: comment line skipped.")#Starting Edge Integrity 
 strProbe1 = re.compile("Probecard First test started")#Start preparing ProbeCardMeasurement
 strProbe2 = re.compile("Probecard Retest started..")#Starting ProbeCazrdMeasurement needles connection completed
@@ -82,6 +85,7 @@ for line in lines:
                 timestamp = thistime
                 isNew = strNEW.search(line)
                 isDim = strDim.search(line)
+#                isDimF = strDimF.search(line)
                 isEdge = strEdge.search(line)
                 isProbe = strProbe.search(line)
                 isProbe1 = strProbe1.search(line)
@@ -99,6 +103,9 @@ for line in lines:
                 
                 if isDim :
                     dic['Dim']=timestamp
+
+#                if isDimF :
+#                    dic['DimF']=timestamp
 
                 if isEdge :
                     dic['Edge']=timestamp

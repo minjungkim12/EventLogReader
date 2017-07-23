@@ -109,7 +109,9 @@ probecard_measurement_2nd= []
 chipCondition="ALL"#arguments can be "OK","NK","ALL"
 dirName = './result'
 fileList = os.listdir(dirName)
-fileChipbyChip = open("chipbychip_result.dat", 'w')
+fileChipbyChip = open("chipbychip_result.csv", 'w')
+fileChipbyChip.write("Time,TrayID,ChipID,Status,TotalTime,Init,Dim,Edge,Probecard,Final_1,Final_2,PInit1,PTime1,PInit2,PTime2")
+
 print total_time
 for item in fileList :
     myfile = open(dirName + "/" + item,'r')
@@ -122,37 +124,83 @@ for item in fileList :
     if isReject :
         print "REJECTED NOT SUITABLE DATA"
         continue
-#    print (dic)
+    print (dic)
     chipbychip_list = []
     chipbychip_list.insert(0,dic.get('trayID'))
     chipbychip_list.insert(1,dic.get('chipID'))
     chipbychip_list.insert(2,dic.get('chipOK'))
-    chipbychip_list.insert(3,(dic.get('Dim') - dic.get('Start')).total_seconds())
-    chipbychip_list.insert(4,(dic.get('Edge') - dic.get('Dim')).total_seconds())
-    chipbychip_list.insert(5,(dic.get('fProbe') - dic.get('Edge')).total_seconds())
-    chipbychip_list.insert(6,(dic.get('endProbe') - dic.get('fProbe')).total_seconds())
-    chipbychip_list.insert(7,(dic.get('Finish') - dic.get('endProbe')).total_seconds())
-    chipbychip_list.insert(8,(dic.get('Finish') - dic.get('Start')).total_seconds())
-    tray_to_ppc.append((dic.get('Dim') - dic.get('Start')).total_seconds())
-    dimension_check.append((dic.get('Edge') - dic.get('Dim')).total_seconds())
-    edge_integrity.append((dic.get('fProbe') - dic.get('Edge')).total_seconds())
-    probecard_measurement_total.append((dic.get('endProbe') - dic.get('fProbe')).total_seconds())
-    ppc_to_tray.append((dic.get('Finish') - dic.get('endProbe')).total_seconds())
+    chipbychip_list.insert(3,(dic.get('Finish') - dic.get('Start')).total_seconds())
     total_time.append((dic.get('Finish') - dic.get('Start')).total_seconds())
+
+    if 'Dim' in dic :
+        chipbychip_list.insert(4,(dic.get('Dim') - dic.get('Start')).total_seconds())
+        tray_to_ppc.append((dic.get('Dim') - dic.get('Start')).total_seconds())
+    else :
+        chipbychip_list.insert(4,"***")
+
+    if 'Edge' in dic :
+        chipbychip_list.insert(5,(dic.get('Edge') - dic.get('Dim')).total_seconds())
+        dimension_check.append((dic.get('Edge') - dic.get('Dim')).total_seconds())
+        if 'fProbe' in dic :
+            chipbychip_list.insert(6,(dic.get('fProbe') - dic.get('Edge')).total_seconds())
+            edge_integrity.append((dic.get('fProbe') - dic.get('Edge')).total_seconds())
+            if 'endProbe' in dic :
+                chipbychip_list.insert(7,(dic.get('endProbe') - dic.get('fProbe')).total_seconds())
+                probecard_measurement_total.append((dic.get('endProbe') - dic.get('fProbe')).total_seconds())
+                chipbychip_list.insert(8,(dic.get('Finish') - dic.get('endProbe')).total_seconds())
+                ppc_to_tray.append((dic.get('Finish') - dic.get('endProbe')).total_seconds())
+                chipbychip_list.insert(9,"***")
+            else :
+                chipbychip_list.insert(7,"***")
+                chipbychip_list.insert(8,(dic.get('Finish') - dic.get('fProbe')).total_seconds())
+                ppc_to_tray.append((dic.get('Finish') - dic.get('fProbe')).total_seconds())
+                chipbychip_list.insert(9,"***")
+        else :
+            chipbychip_list.insert(6,"***")
+            chipbychip_list.insert(7,"***")
+            chipbychip_list.insert(8,(dic.get('Finish') - dic.get('Edge')).total_seconds())
+            chipbychip_list.insert(9,"***")
+
+    else :
+        if 'fProbe' in dic :
+            chipbychip_list.insert(5,(dic.get('fProbe') - dic.get('Dim')).total_seconds())
+            dimension_check.append((dic.get('fProbe') - dic.get('Dim')).total_seconds())
+            chipbychip_list.insert(6,"***")
+            if 'endProbe' in dic :
+                chipbychip_list.insert(7,(dic.get('endProbe') - dic.get('fProbe')).total_seconds())
+                probecard_measurement_total.append((dic.get('endProbe') - dic.get('fProbe')).total_seconds())
+                chipbychip_list.insert(8,(dic.get('Finish') - dic.get('endProbe')).total_seconds())
+                ppc_to_tray.append((dic.get('Finish') - dic.get('endProbe')).total_seconds())
+                chipbychip_list.insert(9,"***")
+            else :
+                chipbychip_list.insert(7,"***")
+                chipbychip_list.insert(8,(dic.get('Finish') - dic.get('fProbe')).total_seconds())
+                ppc_to_tray.append((dic.get('Finish') - dic.get('fProbe')).total_seconds())
+                chipbychip_list.insert(9,"***")
+
+        else :
+            chipbychip_list.insert(5,"***")
+            chipbychip_list.insert(6,"***")
+            chipbychip_list.insert(7,"***")
+            chipbychip_list.insert(8,"***")
+            chipbychip_list.insert(9,(dic.get('Finish') - dic.get('Dim')).total_seconds())
+            
+        
+
     if ('Probe0' in dic) :
         probecard_measurement_initialization_1st.append((dic.get('Probe0') - dic.get('fProbe')).total_seconds())
-        chipbychip_list.insert(9,(dic.get('Probe0') - dic.get('fProbe')).total_seconds())
+        chipbychip_list.insert(11,(dic.get('Probe0') - dic.get('fProbe')).total_seconds())
         if ('sProbe' in dic) :
             probecard_measurement_1st.append((dic.get('sProbe') - dic.get('Probe0')).total_seconds())
-            chipbychip_list.insert(10,(dic.get('sProbe') - dic.get('Probe0')).total_seconds())
+            chipbychip_list.insert(12,(dic.get('sProbe') - dic.get('Probe0')).total_seconds())
             if ('Probe1' in dic) :
                 probecard_measurement_initialization_2nd.append((dic.get('Probe1') - dic.get('sProbe')).total_seconds())
-                chipbychip_list.insert(11,(dic.get('Probe1') - dic.get('sProbe')).total_seconds())
+                chipbychip_list.insert(13,(dic.get('Probe1') - dic.get('sProbe')).total_seconds())
                 probecard_measurement_2nd.append((dic.get('endProbe') - dic.get('Probe1')).total_seconds())
-                chipbychip_list.insert(12,(dic.get('endProbe') - dic.get('Probe1')).total_seconds())
+                chipbychip_list.insert(14,(dic.get('endProbe') - dic.get('Probe1')).total_seconds())
         else :
             probecard_measurement_1st.append((dic.get('endProbe') - dic.get('Probe0')).total_seconds())
-            chipbychip_list.insert(10,(dic.get('endProbe') - dic.get('Probe0')).total_seconds())
+            chipbychip_list.insert(12,(dic.get('endProbe') - dic.get('Probe0')).total_seconds())
 
     strForPrint = str(dic.get('Start'))
     for item in chipbychip_list :
