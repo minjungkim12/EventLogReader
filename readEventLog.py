@@ -56,7 +56,7 @@ strCHDO = re.compile("Response: CHDO ",re.IGNORECASE) #after "probecard measurem
 
 strGrip = re.compile("Response: gripper contact program: command started, pick chip.")#gripper->chip
 
-strTray = re.compile("TR\d") #string for tray ID
+strTray = re.compile("\d{3}\w{2}\d{2}\w{1}") #string for tray ID
 strChip = re.compile("\D\d") #string for chip position ID
 
 strTime = re.compile("\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d\d\d")
